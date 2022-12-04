@@ -1,0 +1,45 @@
+# Day 4 AOC 2022
+
+# PART I
+
+full_overlaps = 0
+part_overlaps = 0
+
+with open("04.txt") as f:
+    
+    data = f.read().splitlines() 
+    
+
+for section in data:
+
+    pair_1, pair_2 = section.split(',')
+
+    pair_1_x, pair_1_y = pair_1.split('-')
+    pair_2_x, pair_2_y = pair_2.split('-')
+    
+
+    x = range(int(pair_1_x), int(pair_1_y)+1)
+    y = range(int(pair_2_x), int(pair_2_y)+1)
+    
+    
+    #fully overlaps
+    
+    if (x.start >= y.start and x.stop <= y.stop) or (y.start >= x.start and y.stop <= x.stop):
+        
+        full_overlaps += 1
+        
+    
+    # PART II 
+   
+    xs = set(x)
+
+    #partially overlaps
+    
+    if xs.intersection(y):
+        
+        part_overlaps += 1
+    
+    
+        
+print("Part I result is {}.".format(full_overlaps))
+print("Part II result is {}.".format(part_overlaps))
