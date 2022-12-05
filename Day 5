@@ -1,0 +1,86 @@
+# AOC Day 5
+
+
+def CrateMover(moves,crates,type=int):
+    
+    for move in moves:
+        
+        num_of_crates = int(move.split(' ')[1])
+        from_crate = int(move.split(' ')[3])
+        to_crate = int(move.split(' ')[5])
+        
+        choosen_crate = crates[from_crate - 1]
+        crates_grabbed = choosen_crate[-num_of_crates:]
+        
+        if type != 9001:
+        
+            crates_grabbed.reverse()
+        
+        crate_to_load = crates[to_crate - 1]
+        
+        crate_to_load = crate_to_load + crates_grabbed
+        choosen_crate = choosen_crate[:-(len(crates_grabbed))]
+        
+        crates[from_crate - 1] = choosen_crate
+        crates[to_crate - 1] = crate_to_load
+        
+        
+    result = ''.join([x[-1] for x in crates])
+    
+    return result
+
+
+def transpose_crates(data):
+
+    crates = []
+    
+    for stack in data:
+    
+        stack = stack.replace("    ", "[X]").replace(' ','').replace('[','').replace(']','')
+        
+        crates.append(stack)
+        
+    #transpose crates
+    cratesT = [list(x) for x in zip(*crates)]
+    
+    for crate in cratesT:
+        
+        while 'X' in crate:
+            crate.remove('X')
+       
+        crate.reverse()
+        
+    return cratesT
+
+
+if __name__ == '__main__':
+    
+    
+    with open('05_.txt') as f:
+        
+        data = f.read()
+        
+    stacks, moves = data.split("\n\n")
+        
+
+    #parse stacks
+    stacks = stacks.split('\n')[:-1]    
+
+    # parse move lines
+    moves = moves.split('\n')
+    
+    
+    
+    # Part I
+    crates_1 = transpose_crates(stacks)
+    res1 = CrateMover(moves, crates_1, 9000)
+    
+    print(f" Part I result is {res1}.")
+    
+    # Part II
+    crates_2 = transpose_crates(stacks)
+    res2 = CrateMover(moves, crates_2, 9001)
+    
+    print(f" Part I result is {res2}.")
+    
+    
