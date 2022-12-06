@@ -1,0 +1,41 @@
+# AoC 2022 Day 6
+
+from collections import Counter
+
+
+def find_marker(data, lenght):
+    
+    for idx, letter in enumerate(data):
+    
+        marker = data[idx:idx+lenght]  
+    
+        counts = Counter(marker)
+        
+        duplicates = [c for c in counts if counts[c] > 1]
+        
+        if not duplicates:
+            
+            res = idx + lenght
+            
+            break
+    
+    return res
+
+
+if __name__ == '__main__':
+    
+    with open('06.txt') as f:
+        
+        data = f.read()
+        
+        
+    # Part I
+    res1 = find_marker(data, 4)
+    print(f'Part I result is {res1}.')
+    
+    # Part II
+    res2 = find_marker(data, 14)
+    print(f'Part II result is {res2}.')
+
+    
+    
