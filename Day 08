@@ -1,0 +1,89 @@
+
+# AoC 2022 Day 8
+
+
+def scenic_view(look, barrier):
+    
+    sight = []
+
+    for idx, x in enumerate(look):
+      
+        if x < barrier:
+            sight.append(x)
+        else:
+            sight.append(barrier)
+            break
+        
+    return len(sight)
+
+       
+
+if __name__ == "__main__":
+    
+   
+    with open('08.txt') as f:
+        
+        data  = f.read().split()
+        
+        
+    grid = [[int(x) for x in list(line)] for line in data]
+    
+    columns = [[int(x) for x in col] for col in list(map(list, zip(*data)))]
+    
+    
+    tree_cnt = 0
+    
+    scenic_scores = []
+    
+    for row_idx, row in enumerate(grid):
+    
+        for col_idx, col in enumerate(columns):
+            
+            if (col_idx != 0 and row_idx != 0) and (col_idx != len(columns)-1 and row_idx != len(grid)-1):
+                   
+                value = grid[row_idx][col_idx]
+
+                left = row[:col_idx]
+                right = row[col_idx+1:]
+                down = col[row_idx+1:]
+                up = col[:row_idx]
+                
+                # PART I
+                
+                left_ = all(x < value for x in left)
+                right_ = all(x < value for x in right)
+                down_ = all(x < value for x in down)
+                up_ = all(x < value for x in up)
+
+                if left_ or right_ or down_ or up_:
+                    
+                    tree_cnt += 1 
+                
+                # PART II
+    
+                look_left = scenic_view(left[::-1],value)
+                look_right = scenic_view(right,value)
+                look_down = scenic_view(down,value)
+                look_up = scenic_view(up[::-1],value)
+                
+                scenic_score = (look_left * look_right * look_down * look_up)
+                scenic_scores.append(scenic_score)
+
+                
+            else:
+                
+                tree_cnt +=1
+        
+    scenic_scores.sort(reverse=True)
+             
+    print('Part I result is {}.'.format(tree_cnt))
+    
+    print('Part II result is {}.'.format(scenic_scores[0]))
+
+    
+    
+        
+
+
+
+        
