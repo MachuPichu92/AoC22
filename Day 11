@@ -1,0 +1,131 @@
+import math
+
+def parse_input(data):
+    
+    monkeys = []
+    
+    for i, monkey in enumerate(data):
+    
+        x = monkey.split('\n')
+        
+        monkey = [y.strip() for y in x]
+        
+        monkey_nr = int(monkey[0].split(' ')[-1][0])
+        
+        items = monkey[1].split(':')[-1].split(',')
+        
+        items_worry = [int(x.strip()) for x in items]
+        
+        operator, num = monkey[2].split(':')[-1].split(' ')[-2:]
+        
+        test = int(monkey[3].split(' ')[-1]) # divisible by
+        
+        true = int(monkey[4].split()[-1])
+        
+        false = int(monkey[5].split()[-1])
+        
+        monkeys.append([monkey_nr,
+                      items_worry,
+                      operator,
+                      num,
+                      test,
+                      true,
+                      false,
+                      0])
+       
+    return monkeys
+    
+
+def lets_play_game(data,part,rounds):
+    
+    
+    prod_divisors = math.prod([monkey[4] for monkey in data])
+    
+    for round in range(0,rounds):
+        
+        
+        for idx, monkey in enumerate(data):
+            
+            monkey[-1] += len(monkey[1]) 
+                
+            
+            for item in monkey[1]:
+                
+                if monkey[3] == 'old':
+                    
+                    operand = item
+                
+                else:
+                    operand = int(monkey[3])
+                
+                if monkey[2] == '*':
+                     
+                    new_item_worry = (item * operand)
+                       
+                elif monkey[2] == '-':
+                    
+                    new_item_worry = (item - operand) 
+                    
+                elif monkey[2] == '+':
+                    
+                    new_item_worry = (item + operand) 
+                    
+                else:
+                    
+                    new_item_worry = (item / operand) 
+               
+                
+                # #Part I 
+                if part == 1:
+                    
+                    new_item_worry = math.trunc(new_item_worry) // 3
+                
+                # #Part II
+                elif part == 2:
+                    
+                    new_item_worry %= prod_divisors
+               
+                true, false = monkey[5:7]
+                test = monkey[4]
+                
+                if new_item_worry % test == 0:
+                     #true
+                    data[true][1].append(new_item_worry)
+                    
+                    
+                else: #false
+                    data[false][1].append(new_item_worry)
+                         
+             
+                
+            data[idx][1] = []
+            
+            
+    result = math.prod(sorted([monkey[-1] for monkey in data])[-2:])
+    
+    return result
+
+
+if __name__ == '__main__':
+    
+    
+    with open('11.txt') as f:
+        
+        data = f.read().split('\n\n')
+          
+    #Part I
+    
+    monkeys = parse_input(data)
+    
+    print(f"Part I result is:", lets_play_game(monkeys,1,20))
+    
+    #Part II
+    
+    monkeys = parse_input(data)
+    
+    print(f"Part II result is:", lets_play_game(monkeys,2,10000))
+   
+
+            
+
+   
