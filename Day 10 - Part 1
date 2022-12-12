@@ -1,0 +1,50 @@
+#AoC 2022 Day 10 
+
+# Part I
+
+
+with open('10.txt') as f:
+    
+    comms = [line.split() for line in f.readlines()]
+    
+
+register = 1
+cycle = 0
+
+strenghts = []
+
+
+cycles = [20,60,100,140,180,220]
+
+for comm in comms:
+
+
+    if comm[0] == 'noop':
+
+        #register += 0
+        cycle += 1
+        
+        if cycle in cycles:
+    
+            print(f'Signal strenght during {cycle}th cycle:', register * cycle)
+            strenghts.append(register * cycle)
+    else:
+    
+        for x in range(1,3):
+            cycle += 1
+
+            if cycle in cycles:
+                
+                print(f'Signal strenght during {cycle}th cycle:', register * cycle)
+                
+                strenghts.append(register * cycle)
+                
+        register += int(comm[1])
+
+# Part I
+print("Part I result is: {}".format(sum(strenghts)))
+
+# Part II
+
+# did not manage to solve completely
+
